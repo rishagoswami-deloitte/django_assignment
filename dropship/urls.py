@@ -19,6 +19,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from dropship import views
 from rest_framework import viewsets
+from dropship.auth import CustomAuthToken
 
 router = DefaultRouter()
 router.register('projects', views.ProjectModelViewSet, basename='project')
@@ -28,4 +29,6 @@ router.register('issue', views.IssueModelViewSet, basename='issue')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
+    path('login/', CustomAuthToken.as_view()),
+    path('auths/', include('rest_framework.urls', namespace='rest_framework')),
 ]
