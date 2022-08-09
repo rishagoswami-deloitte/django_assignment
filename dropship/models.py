@@ -36,6 +36,17 @@ class Project(TimestampModel):
     def __str__(self):
         return "{0} {1}".format(self.code, self.title)
 
+class Sprint(models.Model):
+    title = models.CharField(max_length=128)
+    description = models.TextField()
+    startingdate = models.DateField()
+    endingdate = models.DateField()
+
+    project = models.ForeignKey(Project,max_length=12 , on_delete=models.CASCADE, default="")
+
+    def __str__(self):
+        return "{0} {1} ".format(self.title, self.description)
+
 
 class Issue(TimestampModel):
     BUG = "BUG"
@@ -69,3 +80,12 @@ class Issue(TimestampModel):
 
     def __str__(self):
         return "{0}-{1}".format(self.project.code, self.title)
+
+class Comments(models.Model):
+    comment = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE, null=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True)
+
+    def __str__(self):
+        return "{0} {1} ".format(self.id, self.issue)
